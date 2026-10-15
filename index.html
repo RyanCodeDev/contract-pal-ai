@@ -1,0 +1,318 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta
+      name="description"
+      content="A second set of eyes on your next contract. Review freelancer and small business contracts with your own Ollama server."
+    />
+    <meta name="color-scheme" content="light" />
+    <title>Contract Pal — Read the fine print with confidence</title>
+    <link rel="icon" href="favicon.svg" type="image/svg+xml" />
+    <link rel="stylesheet" href="styles.css" />
+    <script type="module" src="app.js"></script>
+  </head>
+  <body>
+    <header class="site-header">
+      <a class="brand" href="./" aria-label="Contract Pal home"
+        ><span class="brand-icon" aria-hidden="true">cp<span>✦</span></span
+        >Contract Pal<span class="brand-period">.</span></a
+      >
+      <div class="header-actions">
+        <span class="local-label"
+          ><span class="dot"></span> Your server. Your contracts.</span
+        ><button id="settings-button" class="button button-quiet">
+          <span aria-hidden="true">⚙</span> Settings
+        </button>
+      </div>
+    </header>
+    <main>
+      <section class="intro" aria-labelledby="page-title">
+        <div>
+          <p class="eyebrow">
+            <span></span> A LITTLE CLARITY BEFORE YOU COMMIT
+          </p>
+          <h1 id="page-title">
+            Big opportunity.<br />What’s in the <span>fine print?</span>
+          </h1>
+          <p class="intro-copy">
+            A second set of eyes for your next contract. Spot red flags,<br
+              class="desktop-break"
+            />
+            understand the trade-offs, and go into the conversation prepared.
+          </p>
+        </div>
+        <aside class="intro-note">
+          <span class="note-star" aria-hidden="true">✳</span>
+          <p>Built for the business<br />you’re building.</p>
+          <small
+            >Freelancers, side hustlers,<br />and small business owners.</small
+          >
+        </aside>
+      </section>
+      <section class="connection-bar" aria-label="Model connection">
+        <div class="model-status">
+          <span id="connection-dot" class="status-dot"></span
+          ><span id="model-status">No model selected</span
+          ><span class="connection-divider"></span
+          ><span id="server-label">127.0.0.1:11434</span>
+        </div>
+        <button id="select-model-main" class="text-button">
+          Select Model <span aria-hidden="true">↗</span>
+        </button>
+      </section>
+      <div class="workspace">
+        <section class="panel contract-panel" aria-labelledby="contract-title">
+          <div class="panel-heading">
+            <div>
+              <span class="step">01</span>
+              <h2 id="contract-title">Your contract</h2>
+            </div>
+            <button id="sample-button" class="text-button muted">
+              Try an example <span aria-hidden="true">↗</span>
+            </button>
+          </div>
+          <div class="editor-intro">
+            <p>Let’s take a closer look.</p>
+            <span
+              >Paste the full contract, or a clause you’re unsure about.</span
+            >
+          </div>
+          <label class="sr-only" for="contract">Contract text</label
+          ><textarea
+            id="contract"
+            spellcheck="false"
+            placeholder="Paste your contract here…&#10;&#10;Service agreements, freelance projects, NDAs, and everything in between."
+            aria-describedby="privacy-note"
+            maxlength="120000"
+          ></textarea>
+          <p class="context-hint">
+            Long agreement? Review smaller sections and check your model’s
+            context window.
+          </p>
+          <div class="editor-meta">
+            <span id="word-count">0 words</span
+            ><button id="clear-button" class="text-button muted" disabled>
+              Clear text
+            </button>
+          </div>
+          <div class="analyze-row">
+            <p id="privacy-note">
+              <svg viewBox="0 0 24 24" aria-hidden="true">
+                <path d="M12 3 4 6v6c0 5 8 9 8 9s8-4 8-9V6z" />
+                <path d="m8 12 3 3 5-6" />
+              </svg>
+              Sent only to your configured server.<br /><span
+                >Contract text isn’t saved in this browser.</span
+              >
+            </p>
+            <button id="analyze-button" class="button button-primary" disabled>
+              Analyze contract <span aria-hidden="true">→</span></button
+            ><button id="cancel-button" class="button button-outline" hidden>
+              Cancel review
+            </button>
+          </div>
+        </section>
+        <section
+          class="panel review-panel"
+          aria-labelledby="review-title"
+          aria-busy="false"
+        >
+          <div class="panel-heading">
+            <div>
+              <span class="step">02</span>
+              <h2 id="review-title">The review</h2>
+            </div>
+            <span id="review-badge" class="badge">READY WHEN YOU ARE</span>
+          </div>
+          <div id="review-empty" class="review-empty">
+            <div class="document-art" aria-hidden="true">
+              <div class="paper">
+                <span></span><span></span><span></span><span></span><i>✓</i>
+              </div>
+              <span class="art-spark">✦</span>
+            </div>
+            <h3>A clearer picture starts here.</h3>
+            <p>
+              Add your contract and let your local AI<br />help you read between
+              the lines.
+            </p>
+            <div class="review-checks">
+              <span><i>✓</i> Payment &amp; scope of work</span
+              ><span><i>✓</i> Liability &amp; hidden obligations</span
+              ><span><i>✓</i> Ownership &amp; exit clauses</span>
+            </div>
+          </div>
+          <div id="review-loading" class="review-loading" hidden>
+            <span class="spinner" aria-hidden="true"></span>
+            <h3>Reading the fine print…</h3>
+            <p>
+              Your model is reviewing the contract.<br />This may take several
+              minutes on local hardware.
+            </p>
+            <span class="loading-note">You can cancel at any time.</span>
+          </div>
+          <div
+            id="review-error"
+            class="notice error-notice"
+            role="alert"
+            hidden
+          ></div>
+          <div id="review-result" class="review-result" hidden>
+            <div class="result-meta">
+              <span id="result-model"></span
+              ><button id="download-button" class="text-button">
+                Save review ↓
+              </button>
+            </div>
+            <p id="stale-notice" class="notice" hidden>
+              The contract has changed. Analyze it again for an updated review.
+            </p>
+            <div id="review-content"></div>
+          </div>
+          <p class="review-footer">
+            A starting point for better questions, and better decisions.
+          </p>
+        </section>
+      </div>
+      <aside class="disclaimer">
+        <span class="info-icon" aria-hidden="true">i</span>
+        <p>
+          <strong>A helpful perspective. Not legal advice.</strong> Contract Pal
+          is not a lawyer. AI can miss issues or make mistakes. Reviews are for
+          informational purposes only and are not a substitute for advice from a
+          qualified lawyer.
+        </p>
+      </aside>
+      <footer class="site-footer">
+        <span>A little less uncertainty. A little more confidence.</span
+        ><span
+          >Made for your next big thing
+          <span class="footer-star" aria-hidden="true">✦</span></span
+        >
+      </footer>
+    </main>
+    <dialog id="settings-dialog" aria-labelledby="settings-title">
+      <form id="settings-form">
+        <div class="modal-header">
+          <div>
+            <p class="eyebrow">MAKE YOURSELF AT HOME</p>
+            <h2 id="settings-title">Your Ollama setup</h2>
+          </div>
+          <button
+            type="button"
+            id="close-settings"
+            class="icon-button"
+            aria-label="Close settings"
+          >
+            ×
+          </button>
+        </div>
+        <p class="modal-copy">
+          Connect to your own Ollama server and choose the model that will
+          review your contracts.
+        </p>
+        <div class="server-fields">
+          <div>
+            <label for="server-host">Server address</label
+            ><input
+              id="server-host"
+              type="text"
+              value="http://127.0.0.1"
+              placeholder="http://127.0.0.1"
+              required
+              autocomplete="off"
+            /><small
+              >IP address or hostname, including http:// or https://.</small
+            >
+          </div>
+          <div>
+            <label for="server-port">Port</label
+            ><input
+              id="server-port"
+              type="number"
+              min="1"
+              max="65535"
+              value="11434"
+              required
+            />
+          </div>
+        </div>
+        <div class="connection-test">
+          <button
+            id="test-connection"
+            type="button"
+            class="button button-outline"
+          >
+            Test Connection
+          </button>
+          <p
+            id="connection-test-status"
+            class="field-help"
+            role="status"
+            aria-live="polite"
+            aria-atomic="true"
+          >
+            Check that your server is reachable before choosing a model.
+          </p>
+        </div>
+        <div class="model-field">
+          <div class="field-heading">
+            <label for="model-select">Review model</label
+            ><button
+              id="fetch-models"
+              type="button"
+              class="button button-outline"
+            >
+              Select Model <span aria-hidden="true">↗</span>
+            </button>
+          </div>
+          <select id="model-select" disabled>
+            <option value="">Connect to load available models</option>
+          </select>
+          <p
+            id="settings-status"
+            class="field-help"
+            role="status"
+            aria-live="polite"
+          >
+            Models are loaded from your server’s /v1/models endpoint.
+          </p>
+        </div>
+        <details class="connection-help">
+          <summary>Need help connecting?</summary>
+          <p>
+            Start Ollama and install a chat model, for example
+            <code>ollama pull llama3.2</code>. Allow this app’s origin in
+            <code>OLLAMA_ORIGINS</code> and restart Ollama if the browser blocks
+            requests.
+          </p>
+          <p>Your current app origin: <code id="app-origin"></code></p>
+          <p>
+            For a remote server, configure its network access and firewall. An
+            HTTPS page may block an HTTP server; serve this app locally over
+            HTTP instead. Cloud-backed Ollama models may send data to their
+            provider.
+          </p>
+          <a href="https://docs.ollama.com/faq" target="_blank" rel="noreferrer"
+            >Ollama connection guide ↗</a
+          >
+        </details>
+        <p
+          id="settings-error"
+          class="notice error-notice"
+          role="alert"
+          hidden
+        ></p>
+        <div class="modal-footer">
+          <span>Only connection settings are saved.</span
+          ><button type="submit" class="button button-primary">
+            Save settings <span aria-hidden="true">→</span>
+          </button>
+        </div>
+      </form>
+    </dialog>
+    <div id="toast" class="toast" role="status" hidden></div>
+  </body>
+</html>

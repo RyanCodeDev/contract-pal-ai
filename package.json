@@ -1,0 +1,12 @@
+{
+  "name": "contract-pal",
+  "version": "1.0.0",
+  "private": true,
+  "type": "module",
+  "description": "Vanilla browser app for reviewing contracts with a local Ollama server",
+  "scripts": {
+    "start": "python3 -m http.server 8080 --bind 127.0.0.1",
+    "test": "node --test tests/*.test.js",
+    "check": "node --check app.js && node --check core.js"
+  }
+}
