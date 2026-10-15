@@ -21,9 +21,7 @@
         >Contract Pal<span class="brand-period">.</span></a
       >
       <div class="header-actions">
-        <span class="local-label"
-          ><span class="dot"></span> Your server. Your contracts.</span
-        ><button id="settings-button" class="button button-quiet">
+        <button id="settings-button" class="button button-quiet">
           <span aria-hidden="true">⚙</span> Settings
         </button>
       </div>
@@ -31,17 +29,14 @@
     <main>
       <section class="intro" aria-labelledby="page-title">
         <div>
-          <p class="eyebrow">
-            <span></span> A LITTLE CLARITY BEFORE YOU COMMIT
-          </p>
           <h1 id="page-title">
-            Big opportunity.<br />What’s in the <span>fine print?</span>
+            New contract?<br />Check what&apos;s in the
+            <span>fine print</span>
           </h1>
           <p class="intro-copy">
-            A second set of eyes for your next contract. Spot red flags,<br
-              class="desktop-break"
-            />
-            understand the trade-offs, and go into the conversation prepared.
+            A second set of eyes for your next contract. Spot red flags,
+            understand the trade-offs, <br class="desktop-break" />and be better
+            prepared (and save time) when you talk with your lawyer.
           </p>
         </div>
         <aside class="intro-note">
@@ -51,6 +46,15 @@
             >Freelancers, side hustlers,<br />and small business owners.</small
           >
         </aside>
+      </section>
+      <section class="disclaimer-banner" aria-label="Disclaimer">
+        <span class="warning-icon" aria-hidden="true">!</span>
+        <p>
+          <strong>Not legal advice.</strong> Contract Pal is not a lawyer. AI
+          can miss issues or make mistakes. Reviews are for informational
+          purposes only and are not a substitute for advice from a qualified
+          lawyer.
+        </p>
       </section>
       <section class="connection-bar" aria-label="Model connection">
         <div class="model-status">
@@ -75,9 +79,10 @@
             </button>
           </div>
           <div class="editor-intro">
-            <p>Let’s take a closer look.</p>
+            <p>Let&apos;s take a closer look.</p>
             <span
-              >Paste the full contract, or a clause you’re unsure about.</span
+              >Paste the full contract, or a section you&apos;re unsure
+              about.</span
             >
           </div>
           <label class="sr-only" for="contract">Contract text</label
@@ -198,7 +203,7 @@
       <form id="settings-form">
         <div class="modal-header">
           <div>
-            <p class="eyebrow">MAKE YOURSELF AT HOME</p>
+            <p class="eyebrow">YOUR DATA STAYS ON YOUR SERVER</p>
             <h2 id="settings-title">Your Ollama setup</h2>
           </div>
           <button
@@ -266,7 +271,7 @@
               type="button"
               class="button button-outline"
             >
-              Select Model <span aria-hidden="true">↗</span>
+              Refresh Available Models
             </button>
           </div>
           <select id="model-select" disabled>

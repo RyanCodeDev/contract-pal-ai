@@ -1,16 +1,39 @@
-# Contract Pal
+# Contract Pal AI
 
-A buildless HTML, CSS, and JavaScript app that helps freelancers and small business owners spot contract red flags using their own Ollama server. No framework, runtime packages, API key, telemetry, or backend is required.
+_This is a submission for the [Hacktoberfest 2026 Open-Source AI Challenge Week 2: Side Hustle](https://dev.to/challenges/hacktoberfest-week2-2026-10-12)_
+
+Small business owners and freelancers often have to read through contracts when working with clients. With the volume of work and countless responsibilities that falls on a small business owner, it's easy to miss important details. Contract Pal is a second set of eyes for your next contract! Spot red flags, understand the trade-offs, and be better prepared (and save time) when you talk with your lawyer. This utilizes your local Ollama server and models, so no confidential business data leaves your control!
+
+**Not legal advice.** Contract Pal is not a lawyer. AI can miss issues or make mistakes. Reviews are for informational purposes only and are not a substitute for advice from a qualified lawyer.
+
+## How it's built
+
+A buildless HTML, CSS, and JavaScript app that helps freelancers and small business owners spot contract red flags using their own Ollama server. No framework, third-party runtime packages, API key, telemetry, or application backend is required. A bundled Node.js server serves the static files locally.
 
 ## Run locally
 
-With Python 3 installed:
+No .env file to configure! Simply serve this page on your machine and it connects to your local Ollama server, even if it's on another machine on your network ([how to expose Ollama on your network](https://docs.ollama.com/faq#how-can-i-expose-ollama-on-my-network)).
+
+Install Node.js 22 or newer, then run from the project directory:
 
 ```sh
-python3 -m http.server 8080 --bind 127.0.0.1
+npm start
 ```
 
-Open **http://127.0.0.1:8080**. Alternatively, `npm start` runs the same command. Serve over HTTP rather than opening `index.html` directly, because the app uses JavaScript modules. No `npm install` is needed.
+Open **http://127.0.0.1:8080**. No `npm install`, build step, or Python installation is needed. You can also run `node server.js` directly. Stop the server with **Ctrl+C**.
+
+To use a different port, for example when 8080 is occupied:
+
+```sh
+npm start -- 8081
+# Equivalent: node server.js 8081
+```
+
+Open the URL printed in the terminal. Ports must be whole numbers from 1 to 65535. If you change the port, update `OLLAMA_ORIGINS` to match the new app origin if needed.
+
+The bundled `server.js` uses only Node's built-in modules and listens on `127.0.0.1`, making it accessible from this computer. It serves only `index.html`, `styles.css`, `app.js`, `core.js`, and `favicon.svg`; repository metadata, settings files, documentation, and tests are not exposed. It supports GET and HEAD, sends the correct content types, and disables caching so changes appear after refreshing. It does not proxy Ollama requests or process contracts.
+
+Serve over HTTP rather than opening `index.html` directly, because the app uses JavaScript modules.
 
 1. Start [Ollama](https://ollama.com) and install a chat model, for example `ollama pull llama3.2`.
 2. Open **Settings**. The defaults are `http://127.0.0.1` and port `11434`.
@@ -49,11 +72,11 @@ Inputs over 60,000 characters are rejected rather than silently split or truncat
 
 ## Checks
 
-Node.js 18+ is required for development checks only:
+Use the same Node.js 22+ installation for development checks:
 
 ```sh
 npm run check
 npm test
 ```
 
-Tests cover endpoint validation, prompt/request structure, model and completion parsing, HTTP/network failures, timeouts, and cancellation. Live model quality depends on your Ollama installation.
+Tests cover endpoint validation, prompt/request structure, model and completion parsing, HTTP/network failures, timeouts, cancellation, and static server behavior. Server tests check public-file responses, content types, HEAD requests, private-path rejection, allowed methods, and port validation without opening a socket. Live model quality depends on your Ollama installation.
